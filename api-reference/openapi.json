@@ -1,195 +1,1946 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    }
-  }
+	"info": {
+		"_postman_id": "1b115327-fffb-40e5-a6d0-a19b42f435dc",
+		"name": "Fine-Tuner",
+		"description": "Forget lengthy development cycles and expensive machine learning teams. With Fine-Tuner you can build sophisticated, tailored AI agents without technical skills or coding - just bring your data and ideas.\n\nThe Fine-Tuner REST API provides API endpoints for Fine-Tuner data types that allow to interact with your AI models remotely by sending and receiving JSON.\n\n## Authentication\n\nAuthentication to the Fine-Tuner API is performed via HTTP Bearer Authentication. Provide your **API Key** in the `Authorization` request header with the `Bearer` authentication scheme.\n\n```\ncurl -H \"Authorization: Bearer API_KEY\" https://fine-tuner.ai/api/1.1/wf/...\n\n ```\n\n## Generate API Key\n\nTo generate the API Key:\n\n- Log into the [Fine-Tuner Dashboard](https://).\n- Navigate to API KEYS → GENERATE KEY to generate a key.\n    \n\n## Model ID\n\nEach model carries its own distinct Model ID. To effectively use this, include the Model ID within the body of your request.\n\nAfter you've selected a deployed model, such as \"Sales Agent\", you'll notice the \"More Info\" button located in the right corner of your screen. Click on the button and copy the Model ID. This ID should be included as the **'model'** parameter in the JSON body of your request for seamless operation.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16121768",
+		"_collection_link": "https://www.postman.com/fine-tuner/workspace/fine-tuner-api-v-2/collection/16121768-1b115327-fffb-40e5-a6d0-a19b42f435dc?action=share&source=collection_link&creator=16121768"
+	},
+	"item": [
+		{
+			"name": "Text-Based Chat Assistant",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_salesgpt_create",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_chatbot_salesgpt_create"
+							]
+						},
+						"description": "This endpoint creates a new agent and retrieves it's model id."
+					},
+					"response": [
+						{
+							"name": "Create",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_salesgpt_create",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_chatbot_salesgpt_create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 03 Aug 2023 12:29:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":851.8,\"percents\":{\"top\":{\"bubble_cpu\":13,\"block\":86.8,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0.1},\"sub\":{\"pp_userdb\":5.3,\"pp_wait_userdb\":0,\"http_request\":48.7,\"serverjson\":16.3,\"appserver_cache_misses_time\":0,\"redis\":18.1,\"fiber_queue\":0.8,\"capacity_wait\":0.3}},\"counts\":{\"pp_userdb\":5,\"http_request\":1,\"derived_build\":0,\"derived_cache_attempts\":2,\"derived_cache_memory_misses\":2,\"serverjson\":68,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":115,\"fiber_queue\":114,\"blocks\":113},\"misc\":{\"userdb_results\":8,\"userdb_data\":3508,\"spent_time\":25631328,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.394 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7f0e9142de54717a-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"model\": \"1691065780492x702529681946129300\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Inference",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\", //Please replace with appropriate Model_ID.\r\n    \"query\": \"Hey\",\r\n    \"user_id\": \"test123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_salesgpt_inference",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_chatbot_salesgpt_inference"
+							]
+						},
+						"description": "This endpoint facilitates the interaction with a Sales Agent to generate responses or perform an inference. It requires the models unique identifier and a prompt message.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |\n| query | string | The question to pass to the model. | yes |\n| user_id | string | A unique string identifier that you can pass to distinguish your individual users and their sessions. | yes |"
+					},
+					"response": [
+						{
+							"name": "Inference",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"model\": \"1693823952426x446229083458371600\",\r\n    \"query\": \"what’s eigenlayer?\",\r\n    \"user_id\": \"demo123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_salesgpt_inference",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_chatbot_salesgpt_inference"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jul 2023 16:15:32 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":4984,\"percents\":{\"top\":{\"bubble_cpu\":1.9,\"block\":98.1,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0},\"sub\":{\"pp_userdb\":0.6,\"pp_wait_userdb\":0,\"http_request\":93,\"serverjson\":1.2,\"appserver_cache_misses_time\":0,\"redis\":1.7,\"fiber_queue\":0.2,\"capacity_wait\":0.1}},\"counts\":{\"pp_userdb\":4,\"http_request\":1,\"derived_build\":0,\"derived_cache_attempts\":2,\"derived_cache_memory_misses\":2,\"serverjson\":84,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":130,\"fiber_queue\":129,\"blocks\":128},\"misc\":{\"userdb_results\":4,\"userdb_data\":3227,\"spent_time\":22979783,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.354 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7e734de4ab3b215d-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"answer\": \"Great, with a loan amount of 500k and a term of 10 years, we can definitely find a suitable option for you. Let's discuss further details to ensure we find the best fit for your needs. \",\n        \"recommendations\": [\n            \"\\\"Max Loan Amount\\\": \\\"20000000\\\"\",\n            \"\\\"Max Term\\\": \\\"10\\\"\",\n            \"\\\"Max Loan Amount\\\": \\\"10000000\\\"\",\n            \"\\\"Max Term\\\": \\\"10\\\"\",\n            \"\\\"Max Loan Amount\\\": \\\"500000000\\\"\",\n            \"\\\"Max Term\\\": \\\"10\\\"\"\n        ],\n        \"conversation_stage\": \"1\",\n        \"conversation_stage_description\": \"demo\",\n        \"resources\": [\n            {\n                \"type\": \"audio\",\n                \"url\": \"https://storage.googleapis.com/audio-files-text-to-speech/1be04f4d-76ec-4170-b620-d7ff76d14def.wav\"\n            }\n        ],\n        \"tools_used\": [\n            {\n                \"name\": \"Browser\",\n                \"payload\": {\n                    \"method\": \"search_engine\",\n                    \"urls\": [],\n                    \"query\": \"What is the definition of eigenlayer?\",\n                    \"result\": \"EigenLayer is a middleware that is being built on the Ethereum network to commoditize decentralized trust. Protocols that look to integrate EigenLayer will be able to leverage Ethereum's highly secure trust network. EigenLayer is an innovative protocol built on the Ethereum blockchain, introducing the concept of 'restaking'. Restaking is a novel primitive in crypto-economic security, which allows for the reuse of staked ETH or liquid staking tokens (LST) on the consensus layer. EigenLayer is a restaking protocol for Ethereum that enables existing ETH stakers to opt in to validating new software modules (e.g. consensus protocols, data availability layers, oracles,... ⚙️ Eigenlayer is a middleware protocol that introduces restaking. Eigenlayer allows the reuse of ETH in staking to secure other protocols on Ethereum. 🧑\\u200d💻 The technological pillars behind Eigenlayer are pooled security through restaking and an open marketplace mechanism. Summary EigenLayer is a protocol built on Ethereum that introduces restaking, a new primitive in cryptoeconomic security. This primitive enables the rehypothetication of $ETH on the consensus layer.\"\n                }\n            }\n        ],\n        \"sources\": [\n            {\n                \"source\": \"https://e32d51af3de97804b3f8dcfcb7e70a04.cdn.bubble.io/f1693838324765x325002871815536240/whitepaper.pdf\",\n                \"page_row\": \"0\"\n            },\n            {\n                \"source\": \"https://e32d51af3de97804b3f8dcfcb7e70a04.cdn.bubble.io/f1693838324765x325002871815536240/whitepaper.pdf\",\n                \"page_row\": \"11\"\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_salesgpt_log?model={{Model ID}}&from={{Date from}}&to={{Date to}}",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_chatbot_salesgpt_log"
+							],
+							"query": [
+								{
+									"key": "model",
+									"value": "{{Model ID}}",
+									"description": "Please replace with appropriate Model ID"
+								},
+								{
+									"key": "from",
+									"value": "{{Date from}}",
+									"description": "optional"
+								},
+								{
+									"key": "to",
+									"value": "{{Date to}}",
+									"description": "optional"
+								}
+							]
+						},
+						"description": "This endpoint retrieves the full log of the agent included the extracted entity (e.g. lead capture).\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | querystring | The identifier of the fine-tuned model. | yes |\n| from | querystring | Retrieve the logs created after this date. | no |\n| to | querystring | Retrieve the logs created until this date. | no |"
+					},
+					"response": [
+						{
+							"name": "Logs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_salesgpt_log?model=1691679123700x329286864853008400&from=2023-09-02&to=2023-09-04",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_chatbot_salesgpt_log"
+									],
+									"query": [
+										{
+											"key": "model",
+											"value": "1691679123700x329286864853008400"
+										},
+										{
+											"key": "from",
+											"value": "2023-09-02"
+										},
+										{
+											"key": "to",
+											"value": "2023-09-04"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 04 Sep 2023 10:13:54 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":176.3,\"percents\":{\"top\":{\"bubble_cpu\":24,\"block\":74.2,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0.3},\"sub\":{\"pp_userdb\":5.7,\"pp_wait_userdb\":0,\"http_request\":0,\"serverjson\":16.5,\"appserver_cache_misses_time\":0,\"redis\":28.5,\"fiber_queue\":1,\"capacity_wait\":0}},\"counts\":{\"pp_userdb\":3,\"http_request\":0,\"derived_build\":0,\"derived_cache_attempts\":2,\"derived_cache_memory_misses\":2,\"serverjson\":22,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":46,\"fiber_queue\":46,\"blocks\":45},\"misc\":{\"userdb_results\":4,\"userdb_data\":3067,\"spent_time\":8356134,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.129 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "801576653b53cb1e-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"logs\": [\n        {\n            \"created_date\": \"2023-09-04T10:04:14.025Z\",\n            \"completion\": \"You're welcome, Albert! If you have any questions about our products or if you'd like to know more about how we can help improve your sleep, feel free to ask.\",\n            \"prompt\": \"cool thanks\",\n            \"session_id\": \"cLJpBd2jl5xNNDamjTAPrx4GQmbM\",\n            \"extracted_entity\": []\n        },\n        {\n            \"created_date\": \"2023-09-04T09:51:03.371Z\",\n            \"completion\": \"Hi Albert, this is Ted Lasso from Sleep Haven. I hope you're doing well. I'm reaching out to see if you're interested in improving your sleep quality with our premium mattresses.\",\n            \"prompt\": \"Hey, my email is albert@fine-tuner.ai, my phone is +49135156646315\",\n            \"session_id\": \"cLJpBd2jl5xNNDamjTAPrx4GQmbM\",\n            \"extracted_entity\": [\n                {\n                    \"Email\": \"albert@fine-tuner.ai\"\n                },\n                {\n                    \"Phone\": \"49135156646315\"\n                }\n            ]\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"description": "Our most versatile Agent that engages in conversation like a human and adapts its responses based on the specific context of a conversation. It can be used in many areas, like Sales, Customer support, Education, Healthcare, Recruiting and more.\n\nIncludes tools such as:\n\n**Stage Recognition:** The Agent has a 'Stage Recognition' capability. When activated, it can recognize which stage is the Agent at and adjust it's behaviour accordingly.\n\n**Entity Extraction:** Extraction keys enable the agent to identify, extract, and store relevant information during its interactions.\n\n**Product Recommendations:** When this feature is activated, it enables the agent to suggest product recommendations seamlessly within the conversation, drawing from the uploaded product data as needed.\n\n**Text to Speech:** When this feature is activated, it allows the AI Agent to transmute text responses into audible speech."
+		},
+		{
+			"name": "Real-Time Voice Assistant",
+			"item": [
+				{
+					"name": "Voice call",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\", //Please replace with appropriate Model_ID.\r\n    \"phone\": \"+12345678987\",\r\n    \"name\": \"test123\",\r\n    \"external_webhook\": \"\",\r\n    \"custom_variables\": [\r\n        \"Key1: Value1\",\r\n        \"key2: Value2\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_voice_agent_call",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_voice_agent_call"
+							]
+						},
+						"description": "|  | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |\n| phone | string | Phone number you want the agent to call. Please include the country code as well. | yes |\n| name | string | Name of the individual or company your agent will be calling. | yes |\n| external_webhook | string | At the end of the call we'll send a POST request to the URL provided here. | no |\n| custom_variables | array | Please enter each key and its corresponding value in a single input field, separated by a colon and a space, like this: \"Key: Value\". | no |\n\n## Webhook\n\nAt the end of the call we'll send a POST request to the URL provided via **external_webhook** parameter. Payload example:\n\n``` json\n{\n    \"lead\": {\n        \"name\": \"Sample Name\",\n        \"phone_number\": \"123-456-7890\",\n        \"custom_data\": {\"key1\": \"value1\", \"key2\": \"value2\"}\n    },\n    \"call\": {\n        \"status\": \"completed\",\n        \"model_id\": \"sample_model_id\",\n        \"timezone\": \"UTC\",\n        \"call_id\": \"sample_call_id\",\n        \"duration\": 12345,\n        \"start_time\": \"Sample Translated Time\",\n        \"transcript\": \"Sample Transcript\"\n    },\n    \"tools\": {\n        \"scheduler\": {\n            \"enabled\": true,\n            \"sent_sms\": true,\n            \"calendar_link\": \"http://samplelink.com\"\n        }\n    }\n}\n\n ```"
+					},
+					"response": [
+						{
+							"name": "Voice call",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"model\": \"1696372226173x164740052408336400\", //Please replace with appropriate Model_ID.\r\n    \"phone\": \"+12345678987\",\r\n    \"name\": \"test123\",\r\n    \"external_webhook\": \"\",\r\n    \"custom_variables\": [\r\n        \"Key1: Value1\",\r\n        \"key2: Value2\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_voice_agent_call",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_voice_agent_call"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 15 Oct 2023 19:18:23 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":1188.6,\"percents\":{\"top\":{\"bubble_cpu\":9.1,\"block\":90.6,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0.1},\"sub\":{\"pp_userdb\":1.4,\"pp_wait_userdb\":0,\"http_request\":80.8,\"serverjson\":8.5,\"appserver_cache_misses_time\":0,\"redis\":9.1,\"fiber_queue\":0.3,\"capacity_wait\":0.5}},\"counts\":{\"pp_userdb\":3,\"http_request\":1,\"derived_build\":0,\"derived_cache_attempts\":3,\"derived_cache_memory_misses\":3,\"serverjson\":66,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":95,\"fiber_queue\":97,\"blocks\":96},\"misc\":{\"userdb_results\":2,\"userdb_data\":428,\"spent_time\":20294686}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.312 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "816a6852587dbc04-FRA"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"answer\": \"ok\",\n        \"call_id\": \"1691579123700x31589864853004400\"\n   }\n}"
+						}
+					]
+				}
+			],
+			"description": "Our AI Voice Assistants qualify leads, book appointments faster, and completely automate your sales outreach.\n\n📞 Outbound Calls\n\n🕒 24/7 Inbound Call Handling\n\n📆 Read Availability & Schedule Appointments\n\n##### [Learn more](https://www.voice.synthflow.ai/)"
+		},
+		{
+			"name": "Vectorstore",
+			"item": [
+				{
+					"name": "Upload vectors",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\", //Please replace with appropriate Model_ID.\r\n    \"doc_type\": \"url\",\r\n    \"doc_string\": \"https://notion.so\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_embeddings_upsert",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_embeddings_upsert"
+							]
+						},
+						"description": "This endpoint allows users to vectorize text data and stores those in the vector database.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |\n| doc_type | string | Choose one of the following types: \"url\" for a web address, \"file\" for a local file, or \"text\" for plain text content.  <br>  <br>For files the following formats are possible: pdf, csv, pptx, docx, txt. | yes |\n| doc_string | string | Provide a website link (URL), a direct file link (URL), or a plain text input. | yes |"
+					},
+					"response": [
+						{
+							"name": "Upload vectors",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"model\": \"1689374744728x557501484511264800\",\r\n    \"doc_type\": \"url\",\r\n    \"doc_string\": \"https://notion.so\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_embeddings_upsert",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_embeddings_upsert"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jul 2023 16:38:03 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":1267.6,\"percents\":{\"top\":{\"bubble_cpu\":9,\"block\":91,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0.1},\"sub\":{\"pp_userdb\":2.8,\"pp_wait_userdb\":0,\"http_request\":56.2,\"serverjson\":36.7,\"appserver_cache_misses_time\":0,\"redis\":24,\"fiber_queue\":1.2,\"capacity_wait\":0.8}},\"counts\":{\"pp_userdb\":4,\"http_request\":1,\"derived_build\":0,\"derived_cache_attempts\":3,\"derived_cache_memory_misses\":3,\"serverjson\":116,\"appserver_cache_attempts\":2,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":1,\"redis\":143,\"fiber_queue\":138,\"blocks\":137},\"misc\":{\"userdb_results\":4,\"userdb_data\":770,\"spent_time\":24034072,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.37 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7e736ef7d84acad9-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"status\": \"ok\",\n        \"source_id\": \"1689439082640x530775786833510600\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Query vectors",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\", //Please replace with appropriate Model_ID.\r\n    \"prompt\": \"staking\",\r\n    \"top_K\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_embeddings_query",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_embeddings_query"
+							]
+						},
+						"description": "Queries vectors from the database based on similarity search. This endpoint allows users to find the most similar vectors to a given input text.\n\nEndFragment\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |\n| prompt | string | The input text based on which similarity search will be done.  <br> | yes |\n| top_K | integer | The number of results to return for each query (defaults to 3).  <br> | no |"
+					},
+					"response": [
+						{
+							"name": "Similarity search",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"model\": \"1686229985058x806011773235757000\",\r\n    \"prompt\": \"staking\",\r\n    \"top_K\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_embeddings_query",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_embeddings_query"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 08 Jun 2023 15:28:50 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":2086.8,\"percents\":{\"top\":{\"bubble_cpu\":30.2,\"block\":69.8,\"capacity_rl\":0.1,\"other_pause\":0,\"pre_fiber\":0},\"sub\":{\"pp_userdb\":1.5,\"pp_wait_userdb\":0,\"http_request\":45,\"serverjson\":5.8,\"appserver_cache_misses_time\":0,\"redis\":6.2,\"fiber_queue\":1.6,\"capacity_wait\":0.9}},\"counts\":{\"pp_userdb\":3,\"http_request\":2,\"derived_build\":0,\"derived_cache_attempts\":3,\"derived_cache_memory_misses\":3,\"serverjson\":74,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":110,\"fiber_queue\":215,\"blocks\":214},\"misc\":{\"userdb_results\":3,\"userdb_data\":5037,\"spent_time\":101387017,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "1.56 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "3 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d422ab01c3920a8-IAD"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"matches\": [\n            \"Ethereum News  \\n\\n\\n\\nEthereum Transaction Volume Rivals Visa As Blockchain Transactions Soar\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n Ethereum News  \\n\\n\\n\\nAfter Eight Years of Dormancy, Long-Forgotten Ethereum ICO Wallet Resurfaces with $15 Million Worth of Funds\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n Ethereum News  \\n\\n\\n\\nGlobal Payments Giant Visa Experiments with Ethereum's Goerli Testnet – Here's the Latest\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n Ethereum News  \\n\\n\\n\\nBankrupt Celsius Network Channels $75 Million of Ether to Figment Staking Service – What's Going On?\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n Ethereum News  \\n\\n\\n\\nDemand for ETH Staking Soars Despite Nearly Month-Long Waiting Period\\n\\n\\n\\n\\n\\n\\n\\n                                More from Ethereum News\\n                                \\n\\n\\n\\n\\n\\n\\n\\nNFT News\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n NFT News  \\n\\n\\n\\nCrypto Community Adopts 'Stand With Crypto' NFT After SEC Sues Binance and Coinbase\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n NFT News  \\n\\n\\n\\nLouis Vuitton Set to Launch $42,000 Physical-Backed NFT Trunks\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n NFT News\",\n            \"NFT News  \\n\\n\\n\\nBeyond Collectibles: Gary Vaynerchuk's Vision for the Future of NFTs\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n NFT News  \\n\\n\\n\\nIconic H.R. Giger 'Alien' Sculpture to be Fractionalized as NFTs\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n NFT News  \\n\\n\\n\\nReddit Co-Founder Alexis Ohanian Firmly Stands by Play-to-Earn Gaming Model\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n NFT News  \\n\\n\\n\\nMercedes-Benz's Web3 Arm Teams Up with Fingerprints DAO for New NFT Collection\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n NFT News  \\n\\n\\n\\nSony Announces Plans to Back Web3, NFT Startups – Japan Set for Metaverse Pivot?\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n NFT News  \\n\\n\\n\\nWhat Is Azra Games' Approach To NFTs In Gaming\\n\\n\\n\\n\\n\\n\\n\\n                                More from NFT News\\n                                \\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n            Enter your email for our Free Daily Newsletter\\n        \\n\\n A quick 3min read about today's crypto news!\\n\\n\\n\\nSign Up\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nAll News\\n\\n \\n\\n\\n\\n\\n\\n\\n\\n\\n Altcoin News  \\n\\n\\n\\nKorean Prosecutors Target Terra Founder Do Kwon's Crypto Assets Amid Multi-Country Legal Issues\\n\\n\\n\\n\\n\\n \\n\\n\\n\\n\\n\\n\\n\\n\\n Blockchain News\"\n        ],\n        \"score\": [\n            0.740131915,\n            0.736958802\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Vectors",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"source_id\": \"{{Source ID}}\" //Provided in the response body of \"Upload vectors\" API call.\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_embeddings_remove",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_embeddings_remove"
+							]
+						},
+						"description": "This endpoint allows users to delete uploaded vectors from the vector database.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| source_id | string | The identifier of the uploaded source data (provided by the \"Upload vectors\" API call). | yes |"
+					},
+					"response": [
+						{
+							"name": "Delete Vectors",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"source_id\": \"1689439082640x530775786833510600\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_embeddings_remove",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_embeddings_remove"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jul 2023 16:39:27 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":1656.5,\"percents\":{\"top\":{\"bubble_cpu\":5.2,\"block\":94.5,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0.3},\"sub\":{\"pp_userdb\":25.9,\"pp_wait_userdb\":0,\"http_request\":19.1,\"serverjson\":20.4,\"appserver_cache_misses_time\":0,\"redis\":25.3,\"fiber_queue\":2.3,\"capacity_wait\":1}},\"counts\":{\"pp_userdb\":7,\"http_request\":1,\"derived_build\":0,\"derived_cache_attempts\":3,\"derived_cache_memory_misses\":3,\"serverjson\":50,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":113,\"fiber_queue\":110,\"blocks\":109},\"misc\":{\"userdb_results\":5,\"userdb_data\":3014,\"spent_time\":119954151,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "1.845 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7e737103df1acad9-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {}\n}"
+						}
+					]
+				}
+			],
+			"description": "Enables you to generate and store embeddings (vector representations) of your data in a vector database. These embeddings can be used for various purposes, such as contextual memory for your agents and chatbots, similarity search, clustering, or as input for other machine learning models."
+		},
+		{
+			"name": "Widget",
+			"item": [
+				{
+					"name": "Widget Code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_widget_code?model={{Model ID}}",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_widget_code"
+							],
+							"query": [
+								{
+									"key": "model",
+									"value": "{{Model ID}}",
+									"description": "Please replace with appropriate Model ID"
+								}
+							]
+						},
+						"description": "Retrieves the widget embedding code of a chatbot.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | querystring | The identifier of the fine-tuned model. | yes |"
+					},
+					"response": [
+						{
+							"name": "Widget Code",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_widget_code?model=1688992533438x695504193953988600",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_widget_code"
+									],
+									"query": [
+										{
+											"key": "model",
+											"value": "1688992533438x695504193953988600"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jul 2023 17:16:02 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":65.7,\"percents\":{\"top\":{\"bubble_cpu\":35.6,\"block\":62.5,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0.6},\"sub\":{\"pp_userdb\":0,\"pp_wait_userdb\":0,\"http_request\":0,\"serverjson\":31.8,\"appserver_cache_misses_time\":0,\"redis\":72.9,\"fiber_queue\":2.5,\"capacity_wait\":3.1}},\"counts\":{\"pp_userdb\":0,\"http_request\":0,\"derived_build\":0,\"derived_cache_attempts\":2,\"derived_cache_memory_misses\":2,\"serverjson\":18,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":46,\"fiber_queue\":39,\"blocks\":38},\"misc\":{\"userdb_results\":0,\"userdb_data\":0,\"spent_time\":3513430,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.054 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7e73a6a05ff6fafa-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"embed_code\": \"<body>\\n    <script>\\n      window.fineTunerChatbot = {\\n        config: {\\n          apiToken: \\\"naAYUheB23eDp36GEeLj7BXsLTZuxYiOpuBJ2DiqgsU7H2eB\\\",\\n          modelId: \\\"1688992533438x695504193953988600\\\",\\n          chainType: \\\"stuff\\\",\\n          temperature: 0,\\n        }\\n      };\\n    </script>\\n    <script src=\\\"https://chatagi.web.app/chatbot.js\\\"></script>\\n    <style>\\n      .rsc-header {\\n        background: #000000;\\n        font-family: \\\"Lucida Sans\\\", \\\"Lucida Sans Regular\\\", \\\"Lucida Grande\\\",\\n          \\\"Lucida Sans Unicode\\\", Geneva, Verdana, sans-serif;\\n      }\\n      .rsc-ts-bubble {\\n        background: #000000;\\n        color: #ffffff;\\n      }\\n      .rsc-content {\\n        font-family: \\\"Lucida Sans\\\", \\\"Lucida Sans Regular\\\", \\\"Lucida Grande\\\",\\n          \\\"Lucida Sans Unicode\\\", Geneva, Verdana, sans-serif;\\n      }\\n      .rsc-float-button {\\n        background-color: #000000;\\n      }\\n\\n      .rsc{z-index:9999!important;}\\n        \\n        #fine-tuner-chatbot-container{z-index: 1000;}\\n\\n    </style>\\n</body>\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Widget Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\", //Please replace with appropriate Model_ID.\r\n    \"background_color\": \"#000000\",\r\n    \"message_bubble_bg_color\": \"#ffffff\",\r\n    \"message_bubble_font_color\": \"#000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_widget_update",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_widget_update"
+							]
+						},
+						"description": "Updates the widget's style parameters.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |\n| background_color | string | Background color of the widget as hex (i.e. #000000). | no |\n| message_bubble_bg_color | string | Background color of widget's message bubble as hex (i.e. #000000). | no |\n| message_bubble_font_color | string | Font color of widget's message bubble as hex (i.e. #000000). | no |"
+					},
+					"response": []
+				}
+			],
+			"description": "These endpoints enable you to interact with pre-constructed widgets for your models which can be seamlessly embedded on your website. Includes retrieving the code of the widget and personalizing the widget's appearance.\n\nNOTE: currently supporting only ConverSense Agent and Doc QA."
+		},
+		{
+			"name": "LLM Fine-Tuning",
+			"item": [
+				{
+					"name": "Fine-Tuned completion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\",//Please replace with appropriate Model_ID.\r\n    \"prompt\": \"The project scope is to develop a web-based platform that connects customers with service providers such as consultants, teachers, sports instructors, coaches, handymen, and other experienced professionals. The app should feature responsive design, messaging, payments & refunds, cancellation policies, and various other features. The platform should have a landing page, user dashboards, and an admin dashboard to manage user accounts, transactions, categories, and testimonials.\",\r\n    \"temperature\": 0,\r\n    \"max_tokens\": 256\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_generate",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_generate"
+							]
+						},
+						"description": "Generates a completion using the fine-tuned model based on the input prompt. This endpoint allows users to test the model's performance and generate outputs tailored to their specific needs.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |\n| prompt | string | The input text for the model to complete. | yes |\n| temperature | integer | Controls the randomness of the output. Higher values result in more diverse completions, while lower values make the output more deterministic. | no |\n| max_tokens | integer | Maximum number of tokens in the generated response. | no |"
+					},
+					"response": [
+						{
+							"name": "Fine-Tuned completion",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"model\": \"1677538246131x983151615630377000\", //Please replace with appropriate Model_ID.\r\n    \"prompt\": \"The project scope is to develop a web-based platform that connects customers with service providers such as consultants, teachers, sports instructors, coaches, handymen, and other experienced professionals. The app should feature responsive design, messaging, payments & refunds, cancellation policies, and various other features. The platform should have a landing page, user dashboards, and an admin dashboard to manage user accounts, transactions, categories, and testimonials.\",\r\n    \"temperature\": 0,\r\n    \"max_tokens\": 256\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_generate",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_generate"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 06 Jun 2023 16:45:27 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":8778.5,\"percents\":{\"top\":{\"bubble_cpu\":1.2,\"block\":98.8,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0},\"sub\":{\"pp_userdb\":0.3,\"pp_wait_userdb\":0,\"http_request\":95.5,\"serverjson\":1.4,\"appserver_cache_misses_time\":0,\"redis\":1.7,\"fiber_queue\":0.6,\"capacity_wait\":0.1}},\"counts\":{\"pp_userdb\":3,\"http_request\":1,\"derived_build\":0,\"derived_cache_attempts\":3,\"derived_cache_memory_misses\":3,\"serverjson\":62,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":103,\"fiber_queue\":106,\"blocks\":105},\"misc\":{\"userdb_results\":3,\"userdb_data\":4518,\"spent_time\":22804287,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.351 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d321ffe9f6ac4ae-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"completion\": \" FEATURES:\\n\\nResponsive design to ensure compatibility across all devices\\nLanding page to showcase the platform\\nPayments & refunds powered by Stripe to allow customers to pay for services\\nUser dashboards for customers and instructors to manage their profiles, bookings, and cancellations\\nCancellation policies to ensure a fair and transparent booking process\\nMessaging system to enable communication between customers and instructors\\nOn-site and email notifications to keep customers and instructors informed of important events\\nAdmin dashboard to manage user accounts, categories, and transactions, and testimonials\\n\\nUSER TYPES DESCRIPTION:\\n\\nCustomer\\n\\nCan create a profile to book services\\nCan share their profile via social media\\nCan add lessons to their favorites list\\nCan book and cancel a lesson based on the cancellation policy\\nCan leave a review for the instructor after the lesson is completed\\nReceives on-site notifications for certain events\\nCan send messages to the instructor\\nCan become an instructor\\n\\nInstructor\\n\\nCan create and manage listings for lessons\\nCan choose a cancellation policy for each listing separately\\nReceives on-site notifications for certain events\\nCan send messages to the customer\\nCan cancel a listing\\nApproves the booking before the customer\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get training data",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\" //Please replace with appropriate Model_ID.\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_get_data",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_get_data"
+							]
+						},
+						"description": "Fetches the training data associated with the current fine-tuned model. This allows users to review and analyze the dataset used for fine-tuning.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |"
+					},
+					"response": [
+						{
+							"name": "Get training data",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"model\": \"1677538246131x983151615630377000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_get_data",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_get_data"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 06 Jun 2023 16:46:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":183.6,\"percents\":{\"top\":{\"bubble_cpu\":13.7,\"block\":85.1,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0.4},\"sub\":{\"pp_userdb\":0,\"pp_wait_userdb\":0,\"http_request\":0,\"serverjson\":80.7,\"appserver_cache_misses_time\":0,\"redis\":30.3,\"fiber_queue\":3.2,\"capacity_wait\":1.2}},\"counts\":{\"pp_userdb\":0,\"http_request\":0,\"derived_build\":0,\"derived_cache_attempts\":2,\"derived_cache_memory_misses\":2,\"serverjson\":20,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":45,\"fiber_queue\":43,\"blocks\":42},\"misc\":{\"userdb_results\":0,\"userdb_data\":0,\"spent_time\":3784692,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.058 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d322102edefc4ae-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"Tables\": []\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "This method involves adjusting a pre-trained LLM to better suit a specific task or dataset. The process leverages the knowledge already embedded in the model while adapting it to the specific requirements of the new task. This is more complex approach and requires larger dataset."
+		},
+		{
+			"name": "Chatbot",
+			"item": [
+				{
+					"name": "Inference",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\", //Please replace with appropriate Model_ID.\r\n    \"query\": \"what is EigenLayer\",\r\n    \"chain_type\": \"map_reduce\",\r\n    \"temperature\": 0,\r\n    \"user_id\": \"\",\r\n    \"llm\": \"gpt-3.5-turbo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_qa",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_chatbot_qa"
+							]
+						},
+						"description": "Enables you to set up a chatbot to chat over the uploaded documents (PDF, CSV, PowerPoint, Word documents, Text or URL).\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |\n| query | string | The question to pass to the model. | yes |\n| chain_type | string | \"stuff\", \"map_reduce\", or \"refine\" | no |\n| temperature | string | Controls the randomness of the output. Higher values result in more diverse completions, while lower values make the output more deterministic (defaults to 0). | no |\n| llm | string | Currently available:  <br>anthropic  <br>davinci-003  <br>gpt-3.5-turbo  <br>gpt-4  <br>  <br>(defaults to \"davinci-003\"). | no |\n| user_id | string | A unique string identifier that you can pass to distinguish your individual users.  <br> | no |"
+					},
+					"response": [
+						{
+							"name": "Inference",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"model\": \"1688992533438x695504193953988600\",\r\n    \"query\": \"whos harry potter\",\r\n    \"chain_type\": \"stuff\",\r\n    \"temperature\": 0,\r\n    \"user_id\": \"\",\r\n    \"llm\": \"gpt-3.5-turbo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_qa",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_chatbot_qa"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 06 Jun 2023 16:14:15 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":11941.2,\"percents\":{\"top\":{\"bubble_cpu\":0.7,\"block\":99.3,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0},\"sub\":{\"pp_userdb\":0.2,\"pp_wait_userdb\":0,\"http_request\":96.3,\"serverjson\":1.2,\"appserver_cache_misses_time\":0,\"redis\":1.3,\"fiber_queue\":0.2,\"capacity_wait\":0}},\"counts\":{\"pp_userdb\":3,\"http_request\":1,\"derived_build\":0,\"derived_cache_attempts\":3,\"derived_cache_memory_misses\":3,\"serverjson\":72,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":112,\"fiber_queue\":109,\"blocks\":108},\"misc\":{\"userdb_results\":3,\"userdb_data\":2750,\"spent_time\":19230194,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.296 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d31f2365be121b1-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"answer\": \"Harry Potter is a fictional character in the Harry Potter book series by J.K. Rowling. He is a young wizard who attends Hogwarts School of Witchcraft and Wizardry and battles against the dark wizard Voldemort. Harry is known for his lightning bolt scar on his forehead, which was caused by a curse from Voldemort when he was a baby. The curse rebounded and destroyed Voldemort, but left Harry with the scar as a permanent reminder of the event.\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_create",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_chatbot_create"
+							]
+						},
+						"description": "This endpoint creates a new chatbot and retrieves it's model id."
+					},
+					"response": [
+						{
+							"name": "Create",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_create",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_chatbot_create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 11 Jun 2023 10:43:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":289.5,\"percents\":{\"top\":{\"bubble_cpu\":12,\"block\":87.8,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0.2},\"sub\":{\"pp_userdb\":8.6,\"pp_wait_userdb\":0,\"http_request\":0,\"serverjson\":16.3,\"appserver_cache_misses_time\":0,\"redis\":29.9,\"fiber_queue\":1,\"capacity_wait\":0.8}},\"counts\":{\"pp_userdb\":5,\"http_request\":0,\"derived_build\":0,\"derived_cache_attempts\":2,\"derived_cache_memory_misses\":2,\"serverjson\":32,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":77,\"fiber_queue\":75,\"blocks\":74},\"misc\":{\"userdb_results\":4,\"userdb_data\":895,\"spent_time\":10220691,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.157 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d59410d5e6a3b02-IAD"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"model\": \"1686480217300x386805688635642400\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\" //Please replace with appropriate Model_ID.\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_delete",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_chatbot_delete"
+							]
+						},
+						"description": "This endpoint allows users to delete the chatbot by passing it's model id.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |"
+					},
+					"response": []
+				}
+			],
+			"description": "Question answering in this context refers to question answering over your document data. Combining language models with your own text data is a powerful way to differentiate them."
+		},
+		{
+			"name": "CSV Agent",
+			"item": [
+				{
+					"name": "Inference",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"model\": \"{{Model ID}}\", //Please replace with appropriate Model_ID.\r\n    \"query\": \"generate a histogram\",\r\n    \"url\": \"https://e32d51af3de97804b3f8dcfcb7e70a04.cdn.bubble.io/f1685567342849x815560375303840300/atp_tennis_trimmed.csv\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_csv",
+							"protocol": "https",
+							"host": [
+								"fine-tuner",
+								"ai"
+							],
+							"path": [
+								"api",
+								"1.1",
+								"wf",
+								"v2_chatbot_csv"
+							]
+						},
+						"description": "Interact with data in csv format and generate visualizations.\n\n| Parameter | Type | Description | Required |\n| --- | --- | --- | --- |\n| model | string | The identifier of the fine-tuned model. | yes |\n| query | string | The question to pass to the model. | yes |\n| url | string | The URL of the CSV file. | yes |"
+					},
+					"response": [
+						{
+							"name": "Interact",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"model\": \"1685483896988x262703203509862400\",\r\n    \"query\": \"generate a histogram\",\r\n    \"url\": \"https://e32d51af3de97804b3f8dcfcb7e70a04.cdn.bubble.io/f1685567342849x815560375303840300/atp_tennis_trimmed.csv\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://fine-tuner.ai/api/1.1/wf/v2_chatbot_csv",
+									"protocol": "https",
+									"host": [
+										"fine-tuner",
+										"ai"
+									],
+									"path": [
+										"api",
+										"1.1",
+										"wf",
+										"v2_chatbot_csv"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 06 Jun 2023 16:26:31 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-bubble-perf",
+									"value": "{\"total\":53465.2,\"percents\":{\"top\":{\"bubble_cpu\":0.2,\"block\":99.8,\"capacity_rl\":0,\"other_pause\":0,\"pre_fiber\":0},\"sub\":{\"pp_userdb\":0.1,\"pp_wait_userdb\":0,\"http_request\":99.4,\"serverjson\":0.2,\"appserver_cache_misses_time\":0,\"redis\":0.2,\"fiber_queue\":0,\"capacity_wait\":0}},\"counts\":{\"pp_userdb\":4,\"http_request\":1,\"derived_build\":0,\"derived_cache_attempts\":3,\"derived_cache_memory_misses\":3,\"serverjson\":72,\"appserver_cache_attempts\":1,\"appserver_mem_cache_hits\":0,\"appserver_cache_hits\":1,\"appserver_cache_misses\":0,\"redis\":109,\"fiber_queue\":105,\"blocks\":104},\"misc\":{\"userdb_results\":4,\"userdb_data\":3778,\"spent_time\":19940636,\"derived_build_time_spent\":0}}"
+								},
+								{
+									"key": "x-bubble-capacity-used",
+									"value": "0.307 unit-seconds used"
+								},
+								{
+									"key": "x-bubble-capacity-limit",
+									"value": "0 ms slower"
+								},
+								{
+									"key": "vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7d32032cad9021b1-DUS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"response\": {\n        \"answer\": \"To generate a histogram, you'll first need to collect the data you want to represent. Once you have your data, you can organize it into intervals or bins and count the number of data points that fall into each bin. Then, you can create a bar chart with the bins on the x-axis and the frequency (number of data points) on the y-axis. Each bar will represent a bin, and its height will correspond to the frequency of data points in that bin. This will give you a visual representation of the distribution of your data.\",\n        \"url\": \"https://storage.googleapis.com/fine-tuner-pandas-ai/8081eab7-72f7-4412-9556-1a4ee007fa6c.png\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "This agent can interact with data in csv format and generate visualizations. It is mostly optimized for question answering."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{API Key}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API Key",
+			"value": " {{API Key}}"
+		}
+	]
 }
